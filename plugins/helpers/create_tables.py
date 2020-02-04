@@ -1,16 +1,16 @@
+class CREATE_ALL_TABLES_SQL:
+    CREATE_TABLE_artists=(""" 
+    CREATE TABLE public.artists (
+	    artistid varchar(256) NOT NULL,
+	    name varchar(256),
+	    location varchar(256),
+	    lattitude numeric(18,0),
+	    longitude numeric(18,0)
+    );
+    """)
 
-CREATE_TABLE_artists=(""" 
-CREATE TABLE public.artists (
-	artistid varchar(256) NOT NULL,
-	name varchar(256),
-	location varchar(256),
-	lattitude numeric(18,0),
-	longitude numeric(18,0)
-);
-""")
-
-CREATE_TABLE_songplays=(""" 
-CREATE TABLE public.songplays (
+    CREATE_TABLE_songplays=(""" 
+    CREATE TABLE public.songplays (
 	playid varchar(32) NOT NULL,
 	start_time timestamp NOT NULL,
 	userid int4 NOT NULL,
@@ -21,22 +21,22 @@ CREATE TABLE public.songplays (
 	location varchar(256),
 	user_agent varchar(256),
 	CONSTRAINT songplays_pkey PRIMARY KEY (playid)
-);
-""")
+    );
+    """)
 
-CREATE_TABLE_songs=(""" 
-CREATE TABLE public.songs (
+    CREATE_TABLE_songs=(""" 
+    CREATE TABLE public.songs (
 	songid varchar(256) NOT NULL,
 	title varchar(256),
 	artistid varchar(256),
 	"year" int4,
 	duration numeric(18,0),
 	CONSTRAINT songs_pkey PRIMARY KEY (songid)
-);
-""")
+    );
+    """)
 
-CREATE_TABLE_staging_events=(""" 
-CREATE TABLE public.staging_events (
+    CREATE_TABLE_staging_events=(""" 
+    CREATE TABLE public.staging_events (
 	artist varchar(256),
 	auth varchar(256),
 	firstname varchar(256),
@@ -55,11 +55,13 @@ CREATE TABLE public.staging_events (
 	ts int8,
 	useragent varchar(256),
 	userid int4
-);
-""")
+    );
+    """)
 
-CREATE_TABLE_time=(""" 
-CREATE TABLE IF NOT EXIST public."time" (
+
+
+    CREATE_TABLE_time=(""" 
+    CREATE TABLE IF NOT EXIST public."time" (
 	start_time timestamp NOT NULL,
 	"hour" int4,
 	"day" int4,
@@ -68,11 +70,11 @@ CREATE TABLE IF NOT EXIST public."time" (
 	"year" int4,
 	weekday varchar(256),
 	CONSTRAINT time_pkey PRIMARY KEY (start_time)
-) ;
-""")
+    ) ;
+    """)
 
-CREATE_TABLE_staging_songs=(""" 
-CREATE TABLE public.staging_songs (
+    CREATE_TABLE_staging_songs=(""" 
+    CREATE TABLE public.staging_songs (
 	num_songs int4,
 	artist_id varchar(256),
 	artist_name varchar(256),
@@ -83,20 +85,19 @@ CREATE TABLE public.staging_songs (
 	title varchar(256),
 	duration numeric(18,0),
 	"year" int4
-);
-""")
+    );
+    """)
 
-CREATE_TABLE_users=("""
-CREATE TABLE public.users (
+    CREATE_TABLE_users=("""
+    CREATE TABLE public.users (
 	userid int4 NOT NULL,
 	first_name varchar(256),
 	last_name varchar(256),
 	gender varchar(256),
 	"level" varchar(256),
 	CONSTRAINT users_pkey PRIMARY KEY (userid)
-);
-""")
+    );
+    """)
 
-CREATE_ALL_TABLES_SQL=[CREATE_TABLE_artists,CREATE_TABLE_songplays,CREATE_TABLE_songs,CREATE_TABLE_staging_events,CREATE_TABLE_staging_songs,CREATE_TABLE_users,CREATE_TABLE_time]
 
 

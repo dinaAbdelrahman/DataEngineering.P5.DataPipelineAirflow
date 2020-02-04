@@ -37,7 +37,7 @@ class DataQualityOperator(BaseOperator):
             num_records=records[0][0]
             if len(records) < 1 or len(records[0]) < 1:
                 raise ValueError(f"Data quality check failed. {table} returned no results")
-            else if num_records<1:
+            elif num_records < 1:
                 raise ValueError(f"Data quality check failed. {table} contains 0 row")
             else:
                 self.log.info(f"Data quality on table {table} check passed with {records[0][0]} records")

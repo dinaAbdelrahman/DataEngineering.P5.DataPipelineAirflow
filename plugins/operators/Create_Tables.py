@@ -2,7 +2,6 @@ from airflow.hooks.postgres_hook import PostgresHook
 from airflow.contrib.hooks.aws_hook import AwsHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
-from create_tables_sql import CREATE_ALL_TABLES_SQL
 
 
 class CreateTableOperator(BaseOperator):
@@ -14,7 +13,12 @@ class CreateTableOperator(BaseOperator):
                  # Define your operators params (with defaults) here
                  # Example:
                  # conn_id = your-connection-name
-                 redshift_conn_id=""
+                 redshift_conn_id="",
+                 sql_statment1="",
+                 sql_statment2="",
+                 sql_statment3="",
+                 sql_statment4="",
+                 sql_statment5="",
                  *args, **kwargs):
 
         super(CreateTableOperator, self).__init__(*args, **kwargs)
@@ -22,14 +26,22 @@ class CreateTableOperator(BaseOperator):
         # Example:
         # self.conn_id = conn_id
         self.redshift_conn_id = redshift_conn_id
+        self.sql_statment1 = sql_statment1
+        self.sql_statment2 = sql_statment2
+        self.sql_statment3 = sql_statment3
+        self.sql_statment4 = sql_statment4
+        self.sql_statment5 = sql_statment5
+        
 
     def execute(self, context):
         self.log.info('Creating the tables on Redshift')
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
-        for create_table in CREATE_ALL_TABLES_SQL:
-            if create_table.rstrip() != '':
-                redshift.run(create_table)
-        
+        self.log.info('Creating now tables')
+        redshift.run(self.sql_statment1)
+        redshift.run(self.sql_statment2)
+        redshift.run(self.sql_statment3)
+        redshift.run(self.sql_statment4)
+        redshift.run(self.sql_statment5)
         
         

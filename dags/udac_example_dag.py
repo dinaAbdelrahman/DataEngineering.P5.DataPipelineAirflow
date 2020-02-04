@@ -3,8 +3,8 @@ import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators import (StageToRedshiftOperator, LoadFactOperator, LoadDimensionOperator, DataQualityOperator, CreateTableOperator)
-from helpers import SqlQueries
-import create_tables
+from helpers import (SqlQueries, CREATE_ALL_TABLES_SQL)
+
 
 AWS_KEY = os.environ.get('AWS_KEY')
 AWS_SECRET = os.environ.get('AWS_SECRET')
@@ -34,7 +34,12 @@ create_tables = CreateTableOperator(
     task_id='create_tables',
     postgres_conn_id='redshift',
     provide_context=True,
-    dag=dag
+    dag = dag,
+    sql_statment1 = CREATE_ALL_TABLES_SQL.CREATE_TABLE_artists,
+    sql_statment2 = CREATE_ALL_TABLES_SQL.CREATE_TABLE_songplays,
+    sql_statment3 = CREATE_ALL_TABLES_SQL.CREATE_TABLE_songs,
+    sql_statment4 = CREATE_ALL_TABLES_SQL.CREATE_TABLE_staging_events,
+    sql_statment5 = CREATE_ALL_TABLES_SQL.CREATE_TABLE_time
 )
 
 
