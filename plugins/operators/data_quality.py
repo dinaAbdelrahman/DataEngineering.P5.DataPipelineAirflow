@@ -14,6 +14,8 @@ class DataQualityOperator(BaseOperator):
                  aws_credentials_id="",
                  redshift_conn_id="",
                  tables=[],
+                 min_records=1,
+                 sql_check="",
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
@@ -23,6 +25,9 @@ class DataQualityOperator(BaseOperator):
         self.redshift_conn_id = redshift_conn_id
         self.aws_credentials_id = aws_credentials_id
         self.tables = tables
+        self.min_records = min_records
+        self.sql_check = sql_check
+        
 
     def execute(self, context):
         self.log.info('DataQualityOperator not implemented yet')
@@ -33,12 +38,12 @@ class DataQualityOperator(BaseOperator):
         
         for table in self.table:
             self.log.info("Checking table: {}".format(table))
-            records = redshift_hook.get_records(f"SELECT COUNT(*) FROM {table}")
+            records = redshift_hook.get_records(f"{self.sql_check} {table}")
             num_records=records[0][0]
-            if len(records) < 1 or len(records[0]) < 1:
+            if len(records) < self.min_records or len(records[0]) < self.min_records:
                 raise ValueError(f"Data quality check failed. {table} returned no results")
-            elif num_records < 1:
-                raise ValueError(f"Data quality check failed. {table} contains 0 row")
+            elif num_records < self.min_records:
+                raise ValueError(f"Data quality check failed. {table} contains {num_records} row")
             else:
                 self.log.info(f"Data quality on table {table} check passed with {records[0][0]} records")
                 

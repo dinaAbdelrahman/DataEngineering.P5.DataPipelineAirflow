@@ -16,6 +16,7 @@ class LoadDimensionOperator(BaseOperator):
                  aws_credentials_id="",
                  sql_statment="",
                  table="",
+                 mode="",
                  *args, **kwargs):
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
@@ -26,6 +27,7 @@ class LoadDimensionOperator(BaseOperator):
         self.aws_credentials_id = aws_credentials_id
         self.sql_statment = sql_statment
         self.table = table
+        self.mode = mode
 
     def execute(self, context):
         self.log.info('LoadDimensionOperator not implemented yet')
@@ -34,7 +36,18 @@ class LoadDimensionOperator(BaseOperator):
         credentials = aws_hook.get_credentials()
         redsift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
-        self.log.info('Loading now table {}'.format(self.table))
-        redshift.run(self.sql_statment)
+        
+        if self.mode == 'append-only':
+            ## Mode append-only was selected ##
+            self.log.info('Loading now table {}'.format(self.table))
+            redshift.run(self.sql_statment)
+        else:
+            ## Mode delete-load was selected ##
+            self.log.info("Clearing data from destination Redshift table")
+            redshift.run("TRUNCATE table {}".format(self.table))
+            self.log.info('Data was cleared from table {}'.format(self.table))
+            self.log.info('Loading now table {}'.format(self.table))
+            redshift.run(self.sql_statment)
+            
         
         

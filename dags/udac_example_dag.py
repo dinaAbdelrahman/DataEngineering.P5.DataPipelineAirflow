@@ -77,7 +77,8 @@ load_songplays_table = LoadFactOperator(
     redshift_conn_id='redshift',
     aws_credentials_id='aws_credentials',
     sql_statment=SqlQueries.songplay_table_insert,
-    table='songplays'
+    table='songplays',
+    mode='append-only'
 )
 
 load_user_dimension_table = LoadDimensionOperator(
@@ -87,7 +88,8 @@ load_user_dimension_table = LoadDimensionOperator(
     redshift_conn_id='redshift',
     aws_credentials_id='aws_credentials',
     sql_statment=SqlQueries.user_table_insert,
-    table='users'
+    table='users',
+    mode='append-only'    
 )
 
 load_song_dimension_table = LoadDimensionOperator(
@@ -97,7 +99,8 @@ load_song_dimension_table = LoadDimensionOperator(
     redshift_conn_id='redshift',
     aws_credentials_id='aws_credentials',
     sql_statment=SqlQueries.song_table_insert,
-    table='songs'
+    table='songs',
+    mode='append-only'
 )
 
 load_artist_dimension_table = LoadDimensionOperator(
@@ -107,7 +110,8 @@ load_artist_dimension_table = LoadDimensionOperator(
     redshift_conn_id='redshift',
     aws_credentials_id='aws_credentials',
     sql_statment=SqlQueries.artist_table_insert,
-    table='artists'
+    table='artists',
+    mode='append-only'
 )
 
 load_time_dimension_table = LoadDimensionOperator(
@@ -117,7 +121,9 @@ load_time_dimension_table = LoadDimensionOperator(
     redshift_conn_id='redshift',
     aws_credentials_id='aws_credentials',
     sql_statment=SqlQueries.time_table_insert,
-    table='time'
+    table='time',
+    mode='append-only'
+    
 )
 
 run_quality_checks = DataQualityOperator(
@@ -126,7 +132,9 @@ run_quality_checks = DataQualityOperator(
     provide_context=True,
     redshift_conn_id='redshift',
     aws_credentials_id='aws_credentials',  
-    tables=['songplay', 'users', 'songs', 'artists', 'time']
+    tables=['songplay', 'users', 'songs', 'artists', 'time'],
+    min_records=1,
+    sql_check="SELECT COUNT(*) FROM"
 )
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
