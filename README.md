@@ -53,5 +53,5 @@ Now all configured to run Airflow with Redshift.
 ## Datasets
 For this project, I'll be working with two datasets. Here are the s3 links for each:
 
-Log data: s3://udacity-dend/log_data
+Log data: s3://udacity-dend/log_data </br>
 Song data: s3://udacity-dend/song_data
