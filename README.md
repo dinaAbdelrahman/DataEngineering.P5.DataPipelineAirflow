@@ -15,7 +15,7 @@ This project will introduce the core concepts of Apache Airflow. I will create m
 
 ![Dag View](https://github.com/dinaAbdelrahman/DataEngineering.P5.DataPipelineAirflow/blob/master/Dag_project.JPG)
 
-##Add Airflow Connections
+## Add Airflow Connections
 
 Here, we'll use Airflow's UI to configure your AWS credentials and connection to Redshift.
 
